@@ -144,13 +144,9 @@ abstract class Dispatch
     {
         if ($this->route) {
             if (!is_null($this->route['middleware'])) {
-                foreach ($this->route['middleware'] as $key => $value) {
-                    $func = (!empty($value)) ? "check" . ucfirst($value) : '';
-                    if (is_callable($func)) {
-                        if (!call_user_func($func))
-                        {
-                            header("Location: ".LOGIN);
-                        }
+                foreach ($this->route['middleware'] as $key => $task) {
+                    if (is_callable($task)) {
+                        call_user_func($task);
                     }
                 }
             }
