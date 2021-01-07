@@ -58,7 +58,7 @@ abstract class Dispatch
     {
         $this->projectUrl = (substr($projectUrl, "-1") == "/" ? substr($projectUrl, 0, -1) : $projectUrl);
         $patch = (filter_input(INPUT_GET, "route", FILTER_DEFAULT) ?? "/");
-        $this->patch = mb_strtolower($patch, "UTF-8");
+        $this->patch = $patch;
         $this->separator = ($separator ?? ":");
         $this->httpMethod = $_SERVER['REQUEST_METHOD'];
     }
@@ -129,7 +129,7 @@ abstract class Dispatch
 
         $this->route = null;
         foreach ($this->routes[$this->httpMethod] as $key => $route) {
-            if (preg_match("~^" . $key . "$~", $this->patch, $found)) {
+            if (preg_match("~^" . $key . "$~", mb_strtolower($this->patch,"UTF-8"), $found)) {
                 $this->route = $route;
             }
         }
